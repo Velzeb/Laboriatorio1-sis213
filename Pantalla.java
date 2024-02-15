@@ -8,7 +8,7 @@ public class Pantalla {
 		System.out.println("APLICACION");
 		System.out.print("INTEGRANTES: ");
 		System.out.print("Carlos Pacoricona: ");
-		System.out.print("Ruddy ");
+		System.out.print("Ruddy Beltran");
 		
 	}
 
