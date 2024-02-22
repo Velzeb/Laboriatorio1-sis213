@@ -3,30 +3,31 @@ import java.util.Scanner;
 
 public class Pantalla {
 
-	static ArrayList<String[]> listaTareas = new ArrayList<>();
+	static ArrayList<Tarea> listaTareas = new ArrayList<>();
+    static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        Scanner leer = new Scanner(System.in);
         int opcion;
         
         do {
             System.out.println("Seleccione una opción:");
             System.out.println("1. Agregar una tarea");
-            System.out.println("2. Editar una tarea");
-            System.out.println("3. Editar un estado");
+            System.out.println("2. Marcar tarea");
+            System.out.println("3. Eliminar tarea");
             System.out.println("4. Mostrar lista de tareas");
             System.out.println("5. Salir");
-            opcion = scanner.nextInt();
+            opcion = leer.nextInt();
             
             switch (opcion) {
                 case 1:
                     agregarTarea();
                     break;
                 case 2:
-                    editarTarea();
+                    TareasCompletadas();
                     break;
                 case 3:
-                    editarEstado();
+                    EliminarTarea();
                     break;
                 case 4:
                     mostrarLista();
@@ -42,4 +43,89 @@ public class Pantalla {
         scanner.close();
     }
 
+
+    public static void agregarTarea(){
+        System.out.println("Ingresar nombre de la tarea: ");
+        String NombreTarea = scanner.nextLine();
+        listaTareas.add(new Tarea(NombreTarea));
+        System.out.println("Tarea agregada");
+    }
+    
+    public static void TareasCompletadas(){
+        if (listaTareas.isEmpty()) {
+            System.out.println("No hay tareas para marcar como completadas.");
+            return;
+        }
+
+        System.out.println("Lista de tareas:");
+        for (int i = 0; i < listaTareas.size(); i++) {
+            System.out.println((i + 1) + ". " + listaTareas.get(i).getNombre() + " - Completada4: " + listaTareas.get(i).isTerminado());
+        }
+
+        System.out.print("Ingrese el número de la tarea que desea marcar como completada: ");
+        int NumeroTarea = scanner.nextInt();
+        if (NumeroTarea < 1 || NumeroTarea > listaTareas.size()) {
+            System.out.println("Número de tarea inválido.");
+            return;
+        }
+
+        Tarea tarea = listaTareas.get(NumeroTarea - 1);
+        tarea.setTerminado(true);
+        System.out.println("Tarea marcada como completada.");
+    }
+    public static void EliminarTarea(){
+        if (listaTareas.isEmpty()) {
+            System.out.println("No hay tareas para eliminar.");
+            return;
+        }
+
+        System.out.println("Lista de tareas:");
+        for (int i = 0; i < listaTareas.size(); i++) {
+            System.out.println((i + 1) + ". " + listaTareas.get(i).getNombre() + " - Completada: " + listaTareas.get(i).isTerminado());
+        }
+
+        System.out.print("Ingrese el número de la tarea que desea eliminar: ");
+        int NumeroTarea = scanner.nextInt();
+        if (NumeroTarea < 1 || NumeroTarea > listaTareas.size()) {
+            System.out.println("Número de tarea inválido.");
+            return;
+        }
+
+        listaTareas.remove(NumeroTarea - 1);
+        System.out.println("Tarea eliminada correctamente.");
+    }
+    public static void mostrarLista(){
+        System.out.println("--- Reporte de Tareas ---");
+        if (listaTareas.isEmpty()) {
+            System.out.println("No hay tareas registradas.");
+            return;
+        }
+
+        System.out.println("Tareas en curso:");
+        int progreso = 0;
+        for (Tarea tarea : listaTareas) {
+            if (!tarea.isTerminado()) {
+                System.out.println("- " + tarea.getNombre());
+                progreso++;
+            }
+        }
+        if (progreso == 0) {
+            System.out.println("(Ninguna)");
+        }
+
+        System.out.println("\nTareas completadas:");
+        int terminado = 0;
+        for (Tarea tarea : listaTareas) {
+            if (tarea.isTerminado()) {
+                System.out.println("- " + tarea.getNombre());
+                terminado++;
+            }
+        }
+        if (terminado == 0) {
+            System.out.println("(Ninguna)");
+        }
+    }
+
 }
+
+
